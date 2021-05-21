@@ -26,7 +26,7 @@ function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Login" screenOptions={commonScreenOptions}>
         {isLoading ? (
           <Stack.Screen name="Loading" component={LoadingScreen} options={{ headerShown: false }} />
         ) : token ? (
@@ -47,6 +47,16 @@ function App() {
     </NavigationContainer>
   );
 }
+
+const commonScreenOptions = {
+  headerStyle: {
+    backgroundColor: '#082839',
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: 'bold',
+  },
+};
 
 export default function Index() {
   return (
