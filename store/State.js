@@ -5,4 +5,5 @@ export const INIT_STATE = {
   list: [],
   listFromServer: [],
   err: null,
+  aulas: [],
 };

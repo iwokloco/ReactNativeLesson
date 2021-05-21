@@ -5,7 +5,7 @@ import { INIT_STATE } from '../State';
 const reducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     case INIT_APP:
-      return { ...state, isLoading: false, auth: { token: action.payload } };
+      return { ...state, isLoading: false, auth: { token: action.payload.token } };
     case LOGIN_SUCCESS:
       return { ...state, auth: { token: action.payload } };
     case LOGOUT:

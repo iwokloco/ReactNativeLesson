@@ -16,6 +16,7 @@ import { LoadingScreen } from './screens/LoadingScreen';
 import * as SecureStore from 'expo-secure-store';
 import { logout } from './store/actions/Actions';
 import { IconButton } from './components/IconButton/IconButton';
+import ScreenAulas from './screens/ScreenAulas';
 
 const Stack = createStackNavigator(); // {Navigator, Screen} nos retorna un objeto que contiene dos componentes
 
@@ -33,7 +34,7 @@ function App() {
           <>
             <Stack.Screen
               name="Home"
-              component={HomeScreen}
+              component={ScreenAulas}
               options={{
                 headerTitle: '',
                 headerRight: () => <IconButton onPress={() => dispatch(logout())} icon="logout" size={24} color="white" />,

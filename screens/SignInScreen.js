@@ -6,6 +6,7 @@ import { loginSuccess } from '../store/actions/Actions';
 import { connect } from 'react-redux';
 import { URL_LOGIN } from '../constants';
 import { save } from '../services/secure-store.service';
+import { commonStyles } from '../styles/common.styles';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -86,7 +87,7 @@ class SignInScreen extends Component {
   render() {
     const { username, password, hideFooter, error } = this.state;
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.container}>
         <View style={styles.logo}>
           <Ionicons name="rocket" size={windowWidth * 0.3} color="white" />
           <Text style={styles.txtLogin}>Iniciar sesión</Text>
@@ -125,11 +126,6 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps)(SignInScreen);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#082839',
-    padding: 20,
-  },
   logo: {
     marginTop: 100,
     marginBottom: 20,
