@@ -4,6 +4,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { render } from 'react-dom';
 import { loginSuccess } from '../store/actions/Actions';
 import { connect } from 'react-redux';
+import { URL_LOGIN } from '../constants';
+import { save } from '../services/secure-store.service';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -13,6 +15,7 @@ class SignInScreen extends Component {
     this.state = {
       username: '',
       password: '',
+      errorFillData: null,
       hideFooter: false,
     };
   }
@@ -35,21 +38,72 @@ class SignInScreen extends Component {
     this.setState({ hideFooter: false });
   }
 
+  doLoginRequest() {
+    const { username, password } = this.state;
+    if (this.hasEmptyFields()) {
+      this.setState({ errorFillData: 'Tienes que rellenar todos los campos' });
+    } else {
+      fetch(URL_LOGIN, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ user: username, pass: password }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          this.props.dispatch(loginSuccess({ token: res.token }));
+        })
+        .catch((err) => {
+          console.log(err);
+          this.setState({ error: 'Algo ha ido mal, inténtalo más tarde.' });
+        });
+    }
+  }
+
+  hasEmptyFields() {
+    const { username, password } = this.state;
+    return username.length === 0 || password.length === 0;
+  }
+
+  onChangeUsername(value) {
+    if (this.hasEmptyFields()) {
+      this.setState({ username: value, error: 'Tienes que rellenar todos los campos' });
+    } else {
+      this.setState({ username: value, error: null });
+    }
+  }
+
+  onChangePassword(value) {
+    if (this.hasEmptyFields()) {
+      this.setState({ password: value, error: 'Tienes que rellenar todos los campos' });
+    } else {
+      this.setState({ password: value, error: null });
+    }
+  }
+
   render() {
-    const { username, password, hideFooter } = this.state;
+    const { username, password, hideFooter, error } = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.logo}>
           <Ionicons name="rocket" size={windowWidth * 0.3} color="white" />
           <Text style={styles.txtLogin}>Iniciar sesión</Text>
         </View>
-        <TextInput style={styles.input} placeholder="Username" value={username} onChangeText={(value) => this.setState({ username: value })} />
-        <TextInput style={styles.input} placeholder="Password" value={password} onChangeText={(value) => this.setState({ password: value })} secureTextEntry />
-        <TouchableOpacity
-          onPress={() => {
-            this.props.dispatch(loginSuccess({ username, password }));
-          }}
-        >
+        <TextInput style={styles.input} autoCapitalize="none" placeholder="Username" value={username} onChangeText={(value) => this.setState({ username: value })} />
+        <TextInput
+          style={styles.input}
+          autoCapitalize="none"
+          placeholder="Password"
+          value={password}
+          onChangeText={(value) => this.setState({ password: value })}
+          secureTextEntry
+        />
+
+        {error ? <Text>{error}</Text> : null}
+
+        <TouchableOpacity onPress={this.doLoginRequest.bind(this)}>
           <View style={styles.button}>
             <Text style={styles.buttonLabel}>Entrar</Text>
           </View>

@@ -1,5 +1,6 @@
 export const INIT_STATE = {
-  user: null,
+  isLoading: true,
+  auth: { token: null },
   search: '',
   list: [],
   listFromServer: [],
