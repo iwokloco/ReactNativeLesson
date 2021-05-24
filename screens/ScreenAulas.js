@@ -63,6 +63,6 @@ class ScreenAulas extends Component {
 
 const mapStateToProps = (state) => {
   console.log(state);
-  return { token: state.productStore.auth.token.token };
+  return { token: state.productStore.auth.token };
 };
 export default connect(mapStateToProps)(ScreenAulas);

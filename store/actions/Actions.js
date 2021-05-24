@@ -10,8 +10,7 @@ export const DO_SEARCH_FAIL = '[Search] Do Search Fail';
 export const initApp = (payload) => ({ type: INIT_APP, payload });
 export const loginSuccess = (payload) => {
   const { token } = payload;
-  SecureStoreService.save(token);
-  return { type: LOGIN_SUCCESS, payload };
+  return { type: LOGIN_SUCCESS, payload: token };
 };
 export const logout = () => {
   SecureStoreService.delete('token');

@@ -5,7 +5,7 @@ import { render } from 'react-dom';
 import { loginSuccess } from '../store/actions/Actions';
 import { connect } from 'react-redux';
 import { URL_LOGIN } from '../constants';
-import { save } from '../services/secure-store.service';
+import { save, SecureStoreService } from '../services/secure-store.service';
 import { commonStyles } from '../styles/common.styles';
 
 const windowWidth = Dimensions.get('window').width;
@@ -54,7 +54,17 @@ class SignInScreen extends Component {
       })
         .then((res) => res.json())
         .then((res) => {
-          this.props.dispatch(loginSuccess({ token: res.token }));
+          const { token } = res;
+          console.log('token from backend --> ', token);
+          SecureStoreService.save('token', token)
+            .then((res) => {
+              console.log(res);
+              this.props.dispatch(loginSuccess({ token }));
+            })
+            .catch((err) => {
+              console.log(err);
+              this.setState({ error: 'SecureStore fails' });
+            });
         })
         .catch((err) => {
           console.log(err);

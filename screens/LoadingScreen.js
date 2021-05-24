@@ -11,9 +11,11 @@ export function LoadingScreen(props) {
 
   SecureStoreService.get('token')
     .then((token) => {
+      console.log('loading: ', token);
       dispatch(initApp({ token }));
     })
     .catch((res) => {
+      console.log('loading catch: ');
       dispatch(initApp({}));
     });
 
